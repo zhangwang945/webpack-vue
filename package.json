@@ -8,7 +8,8 @@
     "dll": "./bin/mycli dll",
     "start": "./bin/mycli start",
     "stats": "webpack --profile --json > stats.json",
-    "build": "./bin/mycli build"
+    "build": "./bin/mycli build",
+    "debug": "node --inspect-brk ./debug"
   },
   "keywords": [],
   "author": "",

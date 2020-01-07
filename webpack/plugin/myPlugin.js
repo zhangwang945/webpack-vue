@@ -19,27 +19,19 @@ class MyPlugin {
             stats, callback
         ) => {
             console.clear()
-            const info = stats.toJson()
             if (stats.hasErrors()) {
                 console.log(colors.red('\ncompile failed!\n'));
-                const errMsg = info.errors[0].match(errorMsgReg)
-                if (errMsg) {
-                    console.error(errMsg[0])
-                }
-                else {
-                    console.error(info.errors[0])
-                }
+                stats.compilation.errors.forEach(err => {
+                    console.error(`${err.module.resource}\n${err.message}`)
+                });
 
             } else if (stats.hasWarnings()) {
-                
                 console.log(colors.green(`Project is running at http://${ip}:${process.env.port}`));
                 console.log(colors.yellow('\ncompiled with warning!\n'));
-                const warnMsg = info.warnings[0].match(errorMsgReg)
-                if (warnMsg) {
-                    console.warn(warnMsg[0])
-                } else {
-                    console.warn(info.warnings[0])
-                }
+                stats.compilation.warnings.forEach(warning => {
+                    console.warn(`${warning.module.resource}\n${warning.message}`)
+                });
+
             } else {
                 console.log(colors.green(`Project is running at http://${ip}:${process.env.port}`));
                 console.log(colors.green('compile successful!\n'));

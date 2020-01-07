@@ -1,39 +1,49 @@
 <template>
-  <div :class="$style.xx">
-    <img src="~assets/header1.png" alt />
-    <img src="./assets/img/body1.png" alt />
-    rrr
+  <div >
+    <div>
+      <Aa>
+        <div slot="hhh">1111</div>
+      </Aa>
+      <Bb />
+    </div>
     <router-view></router-view>
     <!-- <img src="./assets/jinnang.png" alt=""> -->
   </div>
 </template>
 <script>
 // import  { t } from 'module/test'
-// console.log(t, 999);
-
 // import('./assets/jinnang.png').then(v=>console.log(v))
+import Aa from './Aa.vue'
+import Bb from './Bb.vue'
+
 export default {
   name: 'Hellow',
-  mounted() {
+  components: { Aa, Bb },
+  data() {
+    return {
+      show: true
+    }
+  },
+  computed: {
+  },
+  methods: {
+    handle() {
+      console.log(888);
+      
+      this.show = !this.show
+    }
+  },
+  mounted(){
+    console.log(this);
+    
   }
+
 }
 </script>
-<style module lang="scss">
+<style lang="scss" module>
 body,
 html {
   height: 100%;
   margin: 0;
-}
-body {
-  overflow: hidden;
-}
-img {
-  width: 100%;
-}
-.xx {
-  height: 100%;
-  overflow: hidden;
-  color: red;
-  box-sizing: border-box;
 }
 </style>

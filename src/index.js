@@ -16,8 +16,8 @@ const router = new VueRouter({
 new Vue({
     el: '#app',
     router,
-    render: h => h('App'),
-    components: { App }
+    render: h => h(App),
+    // components: { App }
 })
 if (process.env.NODE_ENV !== 'production') {
     console.log('Looks like we are in development mode!');

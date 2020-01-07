@@ -4,11 +4,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
-module.exports = function () {    
+module.exports = function () {
     return {
         context: path.resolve(),
         entry: path.resolve('src/index.js'),
         resolve: {
+            extensions: ['.js', '.vue'],
             alias: {
                 module: path.resolve('src/module/'),
                 assets: path.resolve('src/assets')

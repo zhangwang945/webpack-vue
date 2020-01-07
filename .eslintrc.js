@@ -4,7 +4,7 @@ module.exports = {
     parserOptions: {
         // ecmaVersion: 2020,
         parser: "babel-eslint",
-        allowImportExportEverywhere:true,
+        allowImportExportEverywhere: true,
         sourceType: "module",
     },
     env: {
@@ -14,6 +14,7 @@ module.exports = {
     extends: ["eslint:recommended", "plugin:vue/essential"],
     rules: {
         "no-debugger": 1,
+        "no-unused-vars": 1,
         "no-restricted-imports": 0
     }
 
