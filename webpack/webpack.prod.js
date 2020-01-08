@@ -9,12 +9,13 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const os = require('os')
+const CompressionPlugin = require('compression-webpack-plugin');
 
 const common = require("./webpack.common.js");
 
 module.exports = function () {
   return merge(common(), {
-    mode: "development",
+    mode: "production",
     output: {
       filename: 'js/[name].[contenthash:6].js',
       chunkFilename: 'js/[name].[contenthash:6].js',
@@ -124,6 +125,12 @@ module.exports = function () {
         to: './'
       }]),
       new ManifestPlugin(),
+      new CompressionPlugin({
+        test: /\.js(\?.*)?$/i,
+        filename: '[path].gz[query]',
+        threshold: 10240,
+        minRatio: 0.9,
+      })
     ]
   })
 }
