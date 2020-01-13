@@ -1,41 +1,48 @@
-const colors = require('colors/safe');
+const chalk = require('chalk');
 const address = require('address');
 const ip = address.ip()
-
-// 提取报错或警告信息
-const errorMsgReg = RegExp(String.fromCharCode(27) + /\[0m[\s\S]*/.source + String.fromCharCode(27) + /\[0m/.source)
+const {
+	SyncHook,
+	SyncBailHook,
+	SyncWaterfallHook,
+	SyncLoopHook,
+	AsyncParallelHook,
+	AsyncParallelBailHook,
+	AsyncSeriesHook,
+	AsyncSeriesBailHook,
+	AsyncSeriesWaterfallHook
+ } = require("tapable");
 class MyPlugin {
+    mode = process.env.NODE_ENV
     apply(compiler) {
-
-        compiler.hooks.compile.tap('myPlugin', () => {
+        // compiling
+        compiler.hooks.compile.tap('_startCompiling', () => {
             console.clear()
-            console.log(colors.blue('compiling...'));
+            console.log(chalk.blue('compiling...'));
         });
 
-        compiler.hooks.afterEmit.tapAsync('myPlugin', (compilation, call) => {
-            call()
-        });
-        compiler.hooks.done.tapAsync('myPlugin', (
+        //Executed when the compilation has completed
+        compiler.hooks.done.tapAsync('_done', (
             stats, callback
         ) => {
             console.clear()
             if (stats.hasErrors()) {
-                console.log(colors.red('\ncompile failed!\n'));
+                console.log(chalk.red('\ncompile failed!\n'));
                 stats.compilation.errors.forEach(err => {
                     console.error(`${err.module.resource}\n${err.message}`)
                 });
 
             } else if (stats.hasWarnings()) {
-                console.log(colors.green(`Project is running at http://${ip}:${process.env.port}`));
-                console.log(colors.yellow('\ncompiled with warning!\n'));
+                console.log(chalk.green(`Project is running at http://${ip}:${process.env.port}`));
+                console.log(chalk.yellow('\ncompiled with warning!\n'));
                 stats.compilation.warnings.forEach(warning => {
                     console.warn(`${warning.module.resource}\n${warning.message}`)
                 });
 
             } else {
-                console.log(colors.green(`Project is running at http://${ip}:${process.env.port}`));
-                console.log(colors.green('compile successful!\n'));
-            }
+                console.log(chalk.green(`Project is running at http://${ip}:${process.env.port}`));
+                console.log(chalk.green('compile successful!\n'));
+            }            
             callback()
         });
     }

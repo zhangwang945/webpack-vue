@@ -7,7 +7,7 @@
       <Bb />
     </div>
     <router-view></router-view>
-    <!-- <img src="./assets/jinnang.png" alt=""> -->
+    <img src="./assets/1.jpg" alt="">
   </div>
 </template>
 <script>

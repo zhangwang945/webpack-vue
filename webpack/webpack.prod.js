@@ -21,13 +21,13 @@ module.exports = function () {
       chunkFilename: 'js/[name].[contenthash:6].js',
       path: path.resolve('dist'),
     },
-    stats: {
-      entrypoints: false,
-      chunks: false,
-      children: false,
-      modules: false
-    },
-    // stats:'verbose',
+    // stats: {
+    //   entrypoints: false,
+    //   chunks: false,
+    //   children: false,
+    //   modules: false
+    // },
+    stats:'none',
     devtool: "source-map",
     optimization: {
       minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],//css优化
@@ -128,7 +128,7 @@ module.exports = function () {
       new CompressionPlugin({
         test: /\.js(\?.*)?$/i,
         filename: '[path].gz[query]',
-        threshold: 10240,
+        // threshold: 10240,
         minRatio: 0.9,
       })
     ]

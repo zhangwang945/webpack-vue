@@ -3,9 +3,9 @@ const webpackDevServer = require('webpack-dev-server')
 const webpackDevConfig = require('./webpack.dev')
 const webpackProdConfig = require('./webpack.prod')
 const webpackDllConfig = require('./webpack.dll')
-const colors = require('colors/safe');
+const chalk = require('chalk');
 const detectPort = require('./tool/detectPort')
-
+const formatStats = require('./tool/formatStats')
 module.exports = function (action, option) {
     if (action === 'start') {
         process.env.NODE_ENV = 'development'
@@ -30,7 +30,22 @@ module.exports = function (action, option) {
             if (err) {
 
             } else {
-                console.log(colors.green(stats.toString(config.stats)));
+                console.log(chalk.green.bold(`Compiled successfully in 2588ms\n`));
+                console.log(`${chalk.cyan.bold('Assets Root Directory: ')}${config.output.path}\n`);
+
+                formatStats(stats)
+                if (stats.hasErrors()) {
+                    console.log(chalk.red.bold('\ncompile failed!\n'));
+                    stats.compilation.errors.forEach(err => {
+                        console.error(`${err.message}`)
+                    });
+
+                } else if (stats.hasWarnings()) {
+                    console.log(chalk.yellow.bold('\ncompiled with warning!\n'));
+                    stats.compilation.warnings.forEach(warning => {
+                        console.warn(chalk.yellow(`${warning.message}\n`))
+                    });
+                }
             }
         })
 
@@ -41,7 +56,7 @@ module.exports = function (action, option) {
             if (err) {
 
             } else {
-                console.log(colors.green(stats.toString(config.stats)));
+                console.log(chalk.green(stats.toString(config.stats)));
             }
         })
     }
