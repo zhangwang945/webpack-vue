@@ -49,7 +49,7 @@ module.exports = function fomatStats(stats) {
             }
             const obj = cacheObj[key][name]
 
-            obj[typeKey] = `${(item.size / 1000).toFixed(2)} KiB`
+            obj[typeKey] = item.size >= 1000 ? `${(item.size / 1000).toFixed(2)} KiB` : `${item.size} B`
 
         }
     });

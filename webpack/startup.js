@@ -1,14 +1,17 @@
 const webpack = require('webpack')
 const webpackDevServer = require('webpack-dev-server')
-const webpackDevConfig = require('./webpack.dev')
-const webpackProdConfig = require('./webpack.prod')
-const webpackDllConfig = require('./webpack.dll')
 const chalk = require('chalk');
 const detectPort = require('./tool/detectPort')
 const formatStats = require('./tool/formatStats')
+const fs =require('fs')
+const path = require('path')
+
 module.exports = function (action, option) {
     if (action === 'start') {
         process.env.NODE_ENV = 'development'
+
+        const webpackDevConfig = require('./webpack.dev')
+        
         const config = webpackDevConfig()
         const compiler = webpack(config)
         const devServerOption = config.devServer
@@ -24,39 +27,64 @@ module.exports = function (action, option) {
 
     } else if (action === 'build') {
         process.env.NODE_ENV = 'production'
+
+        const webpackProdConfig = require('./webpack.prod')
+
         const config = webpackProdConfig()
         const compiler = webpack(config)
         compiler.run((err, stats) => {
             if (err) {
 
             } else {
-                console.log(chalk.green.bold(`Compiled successfully in 2588ms\n`));
-                console.log(`${chalk.cyan.bold('Assets Root Directory: ')}${config.output.path}\n`);
-
-                formatStats(stats)
                 if (stats.hasErrors()) {
                     console.log(chalk.red.bold('\ncompile failed!\n'));
                     stats.compilation.errors.forEach(err => {
-                        console.error(`${err.message}`)
+                        console.error(`${err.message}\n`)
                     });
 
-                } else if (stats.hasWarnings()) {
-                    console.log(chalk.yellow.bold('\ncompiled with warning!\n'));
-                    stats.compilation.warnings.forEach(warning => {
-                        console.warn(chalk.yellow(`${warning.message}\n`))
-                    });
+                } else {
+                    console.log(chalk.green.bold(`Compiled successfully in ${stats.endTime - stats.startTime}ms\n`));
+                    console.log(`${chalk.cyan.bold('Assets Root Directory: ')}${config.output.path}\n`);
+
+                    formatStats(stats)
+                    if (stats.hasWarnings()) {
+                        console.log(chalk.yellow.bold('\ncompiled with warning!\n'));
+                        stats.compilation.warnings.forEach(warning => {
+                            console.warn(chalk.yellow(`${warning.message}\n`))
+                        });
+                    }                    
+                    option.profile&&fs.writeFileSync(path.resolve( 'stats.json'), JSON.stringify(stats.toJson()));
                 }
             }
         })
 
     } else if (action === 'dll') {
+        const webpackDllConfig = require('./webpack.dll')
+
         const config = webpackDllConfig()
         const compiler = webpack(config)
         compiler.run((err, stats) => {
             if (err) {
 
             } else {
-                console.log(chalk.green(stats.toString(config.stats)));
+                if (stats.hasErrors()) {
+                    console.log(chalk.red.bold('\ncompile failed!\n'));
+                    stats.compilation.errors.forEach(err => {
+                        console.error(`${err.message}\n`)
+                    });
+
+                } else {
+                    console.log(chalk.green.bold(`Compiled successfully in ${stats.endTime - stats.startTime}ms\n`));
+                    console.log(`${chalk.cyan.bold('Assets Root Directory: ')}${config.output.path}\n`);
+
+                    formatStats(stats)
+                    if (stats.hasWarnings()) {
+                        console.log(chalk.yellow.bold('\ncompiled with warning!\n'));
+                        stats.compilation.warnings.forEach(warning => {
+                            console.warn(chalk.yellow(`${warning.message}\n`))
+                        });
+                    }
+                }
             }
         })
     }

@@ -1,18 +1,6 @@
-#!/usr/bin/env node
 var program = require('commander')
 var fs = require('fs')
-var path = require('path')
-var { exec } = require('child_process')
 var startup = require('../webpack/startup')
-
-function startDebug() {
-    const arg = process.argv.slice(2).filter(i => i !== '--debug').join(' ')
-    exec(`node --inspect-brk ${path.resolve('webpack/debug.js')} ${arg}`, function (err, b, c) {
-        if (err) console.log(err)
-        console.log(b)
-    })
-}
-
 program.version('v1.0.0')
 // 创建项目
 program
@@ -26,26 +14,16 @@ program
     .command('start')
     .description('创建dev服务')
     .option('-p, --port <port>', 'Port used by the server (default: 3000)')
-    .option('--debug', 'debugging')
     .action(function (cmd) {
-        if (cmd.debug) {
-            startDebug()
-        } else {
-            startup('start', { port: cmd.port })
-        }
+        startup('start', { port: cmd.port })
     })
 // build构建
 program
     .command('build')
     .description('构建')
     .option(' --profile', 'generate stats.json')
-    .option('--debug', 'debugging')
-    .action(function (cmd) {
-        if (cmd.debug) {
-            startDebug()
-        } else {
-            startup('build', { profile: cmd.profile })
-        }
+    .action(function (cmd) {   
+        startup('build', {profile:cmd.profile})
     })
 program
     .command('dll')

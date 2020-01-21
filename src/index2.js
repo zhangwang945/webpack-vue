@@ -1,12 +1,6 @@
 import App from './App.vue'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import 'element-ui/lib/dialog';
-// import { Button } from 'element-ui'
-// import 'element-ui/lib/button'
-// import 'element-ui/lib/dialog'
-// import el from 'element-ui'
-// console.log(Button);
 
 Vue.use(VueRouter)
 

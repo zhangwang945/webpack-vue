@@ -1,16 +1,15 @@
 var path = require("path");
 var webpack = require("webpack");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { dllEntry } = require(path.resolve('webpack.config.js'))
 
 module.exports = function () {
     return {
         mode: "production",
-        entry: {
-            lodash: ["lodash", "jquery"],//第三方库名称
-        },
+        entry: dllEntry,//第三方库名称,
         output: {
-            path: path.resolve("src/dll/dist"),
-            filename: "dll.[hash:6].js",
+            path: path.resolve("dll/dist"),
+            filename: "dll.vendors.[hash:6].js",
             library: "[name][hash]"
         },
         stats: {
@@ -22,7 +21,7 @@ module.exports = function () {
         plugins: [
             new CleanWebpackPlugin(),
             new webpack.DllPlugin({
-                path: path.resolve("src/dll/dist/dll-manifest.json"),
+                path: path.resolve("dll/dist/dll-manifest.json"),
                 name: "[name][hash]"
             })
         ]

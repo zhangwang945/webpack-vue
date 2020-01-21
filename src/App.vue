@@ -1,24 +1,23 @@
 <template>
-  <div >
-    <div>
-      <Aa>
+  <div>
+    <div :class="$style.hhh">
+      <!-- <Aa>
         <div slot="hhh">1111</div>
       </Aa>
-      <Bb />
+      <Bb /> -->
     </div>
     <router-view></router-view>
-    <img src="./assets/1.jpg" alt="">
+    <!-- <img src="~assets/1.jpg" alt=""> -->
   </div>
 </template>
 <script>
-// import  { t } from 'module/test'
-// import('./assets/jinnang.png').then(v=>console.log(v))
-import Aa from './Aa.vue'
-import Bb from './Bb.vue'
+// import Aa from './Aa.vue'
+// import Bb from './Bb.vue'
+// import { Button } from 'element-ui'
 
 export default {
-  name: 'Hellow',
-  components: { Aa, Bb },
+  name: 'App',
+  // components: { Aa, Bb },
   data() {
     return {
       show: true
@@ -29,13 +28,12 @@ export default {
   methods: {
     handle() {
       console.log(888);
-      
+
       this.show = !this.show
     }
   },
-  mounted(){
-    console.log(this);
-    
+  mounted() {
+    console.log(11111);
   }
 
 }
@@ -45,5 +43,8 @@ body,
 html {
   height: 100%;
   margin: 0;
+}
+.hhh {
+  font-weight: bold;
 }
 </style>

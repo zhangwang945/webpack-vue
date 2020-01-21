@@ -1,17 +1,6 @@
 const chalk = require('chalk');
 const address = require('address');
 const ip = address.ip()
-const {
-	SyncHook,
-	SyncBailHook,
-	SyncWaterfallHook,
-	SyncLoopHook,
-	AsyncParallelHook,
-	AsyncParallelBailHook,
-	AsyncSeriesHook,
-	AsyncSeriesBailHook,
-	AsyncSeriesWaterfallHook
- } = require("tapable");
 class MyPlugin {
     mode = process.env.NODE_ENV
     apply(compiler) {
