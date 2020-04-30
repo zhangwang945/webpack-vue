@@ -47,6 +47,7 @@ module.exports = function () {
                             options: {
                                 name: '[name][contenthash:6].[ext]',
                                 outputPath: 'assets',
+                                publicPath:'../assets',
                                 limit: 8000,
                                 esModule: false
                             },

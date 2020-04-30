@@ -2,6 +2,7 @@
   <div :class="$style.hellow">
     hel343434low
     <Button type="primary">主要按钮</Button>
+    <!-- <img src="./assets/header1.png" alt=""> -->
   </div>
 </template>
 <script>
@@ -25,5 +26,6 @@ export default {
 <style lang="scss" module>
 .hellow {
   color: green;
+  background: url('./assets/header1.png');
 }
 </style>
