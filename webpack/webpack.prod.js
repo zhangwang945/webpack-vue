@@ -83,8 +83,12 @@ module.exports = function () {
             test: /\.(css|sass|scss)$/,
             exclude: /node_modules/,
             use: [
-              MiniCssExtractPlugin.loader,
               {
+                loader: MiniCssExtractPlugin.loader,
+                options: {
+                  publicPath: '../'
+                }
+              }, {
                 loader: 'css-loader',
                 options: {
                   modules: {
@@ -111,8 +115,12 @@ module.exports = function () {
             test: /\.css$/,
             include: /node_modules/,
             use: [
-              MiniCssExtractPlugin.loader,
-              'css-loader'
+              {
+                loader: MiniCssExtractPlugin.loader,
+                options: {
+                  publicPath: '../'
+                }
+              }, 'css-loader'
             ]
           }
         ]
