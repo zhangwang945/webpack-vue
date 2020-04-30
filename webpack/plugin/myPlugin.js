@@ -18,20 +18,20 @@ class MyPlugin {
             if (stats.hasErrors()) {
                 console.log(chalk.red('\ncompile failed!\n'));
                 stats.compilation.errors.forEach(err => {
-                    console.error(`${err.module.resource}\n${err.message}`)
+                    console.error(`${err.module ? err.module.resource : ""}\n${err.message}`)
                 });
 
             } else if (stats.hasWarnings()) {
                 console.log(chalk.green(`Project is running at http://${ip}:${process.env.port}`));
                 console.log(chalk.yellow('\ncompiled with warning!\n'));
                 stats.compilation.warnings.forEach(warning => {
-                    console.warn(`${warning.module.resource}\n${warning.message}`)
+                    console.warn(`${warning.module ? warning.module.resource : ''}\n${warning.message}`)
                 });
 
             } else {
                 console.log(chalk.green(`Project is running at http://${ip}:${process.env.port}`));
                 console.log(chalk.green('compile successful!\n'));
-            }            
+            }
             callback()
         });
     }
