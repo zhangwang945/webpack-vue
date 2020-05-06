@@ -3,7 +3,7 @@ const path = require('path')
 
 module.exports = {
     dllEntry: {
-        vuebase: ["vue", "vuex", "vue-router"]
+        vuebase: ["vue", "vuex", "vue-router", 'element-ui']
     },
     items: [
         {

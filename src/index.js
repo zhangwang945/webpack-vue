@@ -1,15 +1,13 @@
 import App from './App.vue'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import 'element-ui/lib/dialog';
-// import { Button } from 'element-ui'
-// import 'element-ui/lib/button'
-// import 'element-ui/lib/dialog'
-// import el from 'element-ui'
-// console.log(Button);
+
+import el from 'element-ui/lib/element-ui.common'
+import 'element-ui/lib/theme-chalk/index.css';
+
 
 Vue.use(VueRouter)
-
+Vue.use(el)
 const routes = [
     { path: '/foo', component: () => import(/* webpackChunkName:"Hellow" */'./Hellow.vue') },
 ]
