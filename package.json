@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./bin/mycli dll && ./bin/mycli build",
     "dll": "./bin/mycli dll",
     "start": "./bin/mycli start",
     "build": "./bin/mycli build",
