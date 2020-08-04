@@ -2,7 +2,7 @@ const merge = require('webpack-merge');
 const path = require('path')
 const MyPlugin = require('./plugin/myPlugin')
 const common = require('./webpack.common.js');
-const { items, dllEntry, ...webpackConfig } = require(path.resolve('webpack.config.js'))
+const { items, publicPath, dllEntry, ...webpackConfig } = require(path.resolve('webpack.config.js'))
 
 module.exports = function () {
   return merge(

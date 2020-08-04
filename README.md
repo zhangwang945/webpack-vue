@@ -28,6 +28,7 @@
  ```
 ## webpack.config.js
 ```javascript
+    publicPath:'/', //必填 远程的根目录路径
     dllEntry: {
         vuebase: ["vue", "vuex", "vue-router"]
     },

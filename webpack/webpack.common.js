@@ -3,8 +3,11 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const { items, ...webpackConfig } = require(path.resolve('webpack.config.js'))
+let { items, publicPath, ...webpackConfig } = require(path.resolve('webpack.config.js'))
 
+const isPro = process.env.NODE_ENV === 'production'
+
+if (!isPro) publicPath = '/'
 // 入口
 const entry = items.reduce(
     (entry, item) => {
@@ -47,7 +50,7 @@ module.exports = function () {
                             options: {
                                 name: '[name][contenthash:6].[ext]',
                                 outputPath: 'assets',
-                                // publicPath:'../assets',
+                                publicPath:`${publicPath}assets`,
                                 limit: 8000,
                                 esModule: false
                             },

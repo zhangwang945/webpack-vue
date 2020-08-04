@@ -10,7 +10,7 @@ const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const os = require('os')
 const CompressionPlugin = require('compression-webpack-plugin');
-const { items, dllEntry, ...webpackConfig } = require(path.resolve('webpack.config.js'))
+const { items, publicPath, dllEntry, ...webpackConfig } = require(path.resolve('webpack.config.js'))
 
 const common = require("./webpack.common.js");
 const minChunksNum = Math.ceil((items.length + 1) / 2)
@@ -23,6 +23,7 @@ module.exports = function () {
         filename: 'js/[name].[contenthash:6].js',
         chunkFilename: 'js/[name].[contenthash:6].js',
         path: path.resolve('dist'),
+        publicPath,
         pathinfo: false
       },
       stats: 'none',
@@ -118,7 +119,7 @@ module.exports = function () {
               {
                 loader: MiniCssExtractPlugin.loader,
                 options: {
-                  publicPath: '../'
+                  // publicPath: '../'
                 }
               }, 'css-loader'
             ]

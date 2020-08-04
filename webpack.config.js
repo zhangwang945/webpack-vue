@@ -2,6 +2,7 @@ const webpack = require('webpack')
 const path = require('path')
 
 module.exports = {
+    publicPath: '/',//远程根目录的路径
     dllEntry: {
         vuebase: ["vue", "vuex", "vue-router", 'element-ui']
     },

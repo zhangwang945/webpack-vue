@@ -20,6 +20,6 @@ export default {
 <style lang="scss" module>
 .hellow {
   color: green;
-  background: url('./assets/header1.png');
+  background: url('./assets/jinnang.png');
 }
 </style>
