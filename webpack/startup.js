@@ -3,15 +3,18 @@ const webpackDevServer = require('webpack-dev-server')
 const chalk = require('chalk');
 const detectPort = require('./tool/detectPort')
 const formatStats = require('./tool/formatStats')
-const fs =require('fs')
-const path = require('path')
+const fs = require('fs')
+const path = require('path');
+const {
+    error
+} = require('console');
 
 module.exports = function (action, option) {
     if (action === 'start') {
         process.env.NODE_ENV = 'development'
 
         const webpackDevConfig = require('./webpack.dev')
-        
+
         const config = webpackDevConfig()
         const compiler = webpack(config)
         const devServerOption = config.devServer
@@ -21,8 +24,7 @@ module.exports = function (action, option) {
             .then(port => {
                 process.env.port = devServerOption.port = port
                 const server = new webpackDevServer(compiler, devServerOption)
-                server.listen(port, devServerOption.host || '0.0.0.0', () => {
-                });
+                server.listen(port, devServerOption.host || '0.0.0.0', () => {});
             })
 
     } else if (action === 'build') {
@@ -34,7 +36,7 @@ module.exports = function (action, option) {
         const compiler = webpack(config)
         compiler.run((err, stats) => {
             if (err) {
-
+                console.error(err)
             } else {
                 if (stats.hasErrors()) {
                     console.log(chalk.red.bold('\ncompile failed!\n'));
@@ -52,8 +54,8 @@ module.exports = function (action, option) {
                         stats.compilation.warnings.forEach(warning => {
                             console.warn(chalk.yellow(`${warning.message}\n`))
                         });
-                    }                    
-                    option.profile&&fs.writeFileSync(path.resolve( 'stats.json'), JSON.stringify(stats.toJson()));
+                    }
+                    option.profile && fs.writeFileSync(path.resolve('stats.json'), JSON.stringify(stats.toJson()));
                 }
             }
         })
@@ -65,7 +67,7 @@ module.exports = function (action, option) {
         const compiler = webpack(config)
         compiler.run((err, stats) => {
             if (err) {
-
+                console.error(err)
             } else {
                 if (stats.hasErrors()) {
                     console.log(chalk.red.bold('\ncompile failed!\n'));

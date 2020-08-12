@@ -3,20 +3,20 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-let { items, publicPath, ...webpackConfig } = require(path.resolve('webpack.config.js'))
+let { entries, publicPath, ...webpackConfig } = require(path.resolve('webpack.config.js'))
 
 const isPro = process.env.NODE_ENV === 'production'
 
 if (!isPro) publicPath = '/'
 // 入口
-const entry = items.reduce(
+const entry = entries.reduce(
     (entry, item) => {
         entry[item.entryName] = item.entryPath
         return entry
     }, {}
 )
 // htmlWebpack
-const htmlPluginInstances = items.reduce(
+const htmlPluginInstances = entries.reduce(
     (arr, item) => {
         arr.push(
             new HtmlWebpackPlugin({
@@ -43,7 +43,7 @@ module.exports = function () {
         module: {
             rules: [
                 {
-                    test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)$/i,
+                    test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz|video)$/i,
                     use: [
                         {
                             loader: 'url-loader',

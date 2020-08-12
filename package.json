@@ -9,7 +9,8 @@
     "start": "./bin/mycli start",
     "build": "./bin/mycli build",
     "stats": "./bin/mycli build --profile",
-    "debug":"./bin/mycli build --debug"
+    "debug:start": "./bin/mycli start --debug",
+    "debug:build": "./bin/mycli build --debug"
   },
   "keywords": [],
   "author": "",
@@ -33,7 +34,7 @@
     "copy-webpack-plugin": "^5.1.0",
     "core-js": "^3.6.2",
     "cross-env": "^6.0.3",
-    "css-loader": "^3.2.0",
+    "css-loader": "^3.6.0",
     "csv-loader": "^3.0.2",
     "eslint": "^6.7.1",
     "eslint-formatter-pretty": "^3.0.1",
@@ -64,6 +65,7 @@
     "xml-loader": "^1.2.1"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "element-ui": "^2.13.0",
     "jquery": "^3.4.1",
     "lodash": "^4.17.15",

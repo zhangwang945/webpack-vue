@@ -2,12 +2,14 @@ const webpack = require('webpack')
 const path = require('path')
 
 module.exports = {
-    publicPath: '/',//远程根目录的路径
+    publicPath: '/', //远程根目录的路径
+    proxy: {
+        '/api': 'http://cftx.hcqh.net'
+    },
     dllEntry: {
         vuebase: ["vue", "vuex", "vue-router", 'element-ui']
     },
-    items: [
-        {
+    entries: [{
             entryName: 'index',
             entryPath: path.resolve('src/index.js'),
             title: 'Demo',
@@ -20,6 +22,12 @@ module.exports = {
             template: 'src/index.html',
         }
     ],
+    output: {},
+    resolve: {
+        alias: {
+            module:path.resolve('src/module')
+        }
+    },
     plugins: [
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)

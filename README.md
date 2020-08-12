@@ -29,10 +29,11 @@
 ## webpack.config.js
 ```javascript
     publicPath:'/', //必填 远程的根目录路径
+    proxy:{}, //代理配置
     dllEntry: {
         vuebase: ["vue", "vuex", "vue-router"]
     },
-    items: [
+    entries: [
         {
             entryName: 'index',
             entryPath: path.resolve('src/index.js'),
@@ -49,9 +50,11 @@
 ```
 ```
 1、新增 dllEntry 提前打包项目共用的第三方依赖库（必填）
+2、entries代替原有的entry字段  作为项目打包入口项（必填）数组的长度就是入口的数量
    entryName 入口的名称
    entryPath 入口文件
    其余字段与 HtmlWebpackPlugin 的参数一致
-2、items代替原有的entry字段  作为项目打包入口项（必填）数组的长度就是入口的数量
-3、其余配置同webpack原有配置一致
+3、publicpath  必填 网络访问的静态文件根目录路径
+4、proxy  代理转发配置
+5、其余配置同webpack原有配置一致
 ```

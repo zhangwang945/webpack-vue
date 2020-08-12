@@ -34,11 +34,17 @@ export default {
   },
   mounted() {
     console.log(11111);
+    // fetch('/api/v5/home/index').then((a)=>{
+    //   console.log(a.json());
+    // }).catch(()=>{
+    // })
   }
 
 }
 </script>
 <style lang="scss" module>
+// @import "math";
+
 body,
 html {
   height: 100%;

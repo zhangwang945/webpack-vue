@@ -5,19 +5,26 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserJSPlugin = require('terser-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {
+  CleanWebpackPlugin
+} = require('clean-webpack-plugin');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const os = require('os')
 const CompressionPlugin = require('compression-webpack-plugin');
-const { items, publicPath, dllEntry, ...webpackConfig } = require(path.resolve('webpack.config.js'))
+const {
+  entries,
+  publicPath,
+  dllEntry,
+  proxy,
+  ...webpackConfig
+} = require(path.resolve('webpack.config.js'))
 
 const common = require("./webpack.common.js");
-const minChunksNum = Math.ceil((items.length + 1) / 2)
+const minChunksNum = Math.ceil((entries.length + 1) / 2)
 module.exports = function () {
   return merge(
-    common(),
-    {
+    common(), {
       mode: "production",
       output: {
         filename: 'js/[name].[contenthash:6].js',
@@ -29,10 +36,15 @@ module.exports = function () {
       stats: 'none',
       devtool: "source-map",
       profile: true,
+      performance: {
+        hints: 'warning',
+        maxAssetSize: 1000000,
+        maxEntrypointSize: 400000
+      },
       optimization: {
         namedChunks: true,
         moduleIds: 'hashed',
-        minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],//css优化
+        minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})], //css优化
         splitChunks: {
           name: false,
           maxInitialRequests: 5,
@@ -41,7 +53,7 @@ module.exports = function () {
             commons: {
               name: 'commons',
               test: /[\\/]node_modules[\\/]/,
-              minChunks: minChunksNum > 1 ? minChunksNum : 2,//多入口引入的第三方包打包到commons
+              minChunks: minChunksNum > 1 ? minChunksNum : 2, //多入口引入的第三方包打包到commons
               chunks: 'all',
               enforce: true,
               priority: -10
@@ -54,8 +66,7 @@ module.exports = function () {
       },
 
       module: {
-        rules: [
-          {
+        rules: [{
             test: /\.vue$/,
             loader: 'vue-loader'
           },
@@ -65,8 +76,7 @@ module.exports = function () {
               /node_modules/.test(file) &&
               !/\.vue\.js/.test(file)
             ),
-            use: [
-              {
+            use: [{
                 loader: 'cache-loader'
               },
               {
@@ -83,46 +93,82 @@ module.exports = function () {
           {
             test: /\.(css|sass|scss)$/,
             exclude: /node_modules/,
-            use: [
-              {
-                loader: MiniCssExtractPlugin.loader,
-                options: {
-                  publicPath: '../'
-                }
-              }, {
-                loader: 'css-loader',
-                options: {
-                  modules: {
-                    // mode: 'local',
-                    localIdentName: '[name]__[local]--[hash:base64:5]',
-                    context: path.resolve('src'),
-                    // hashPrefix: 'my-custom-hash',
+            oneOf: [{
+                resourceQuery: /module/,
+                use: [{
+                    loader: MiniCssExtractPlugin.loader,
+                    options: {
+                      // publicPath: '../'
+                    }
+                  }, {
+                    loader: 'css-loader',
+                    options: {
+                      modules: {
+                        // mode: 'local',
+                        localIdentName: '[name]__[local]--[hash:base64:5]',
+                        context: path.resolve('src'),
+                        // hashPrefix: 'my-custom-hash',
+                      },
+                    },
                   },
-                },
+                  {
+                    loader: 'postcss-loader',
+                    options: {
+                      ident: 'postcss',
+                      plugins: [
+                        require('postcss-preset-env')(),
+                      ]
+                    }
+                  },
+                  {
+                    loader: 'sass-loader',
+                    options: {
+                      sassOptions: {
+                        includePaths: [path.resolve('src/style')]
+                      }
+                    }
+                  }
+                ],
               },
               {
-                loader: 'postcss-loader',
-                options: {
-                  ident: 'postcss',
-                  plugins: [
-                    require('postcss-preset-env')(),
-                  ]
-                }
-              },
-              "sass-loader",
+                use: [{
+                    loader: MiniCssExtractPlugin.loader,
+                    options: {
+                      // publicPath: '../'
+                    }
+                  },
+                  'css-loader',
+                  {
+                    loader: 'postcss-loader',
+                    options: {
+                      ident: 'postcss',
+                      plugins: [
+                        require('postcss-preset-env')(),
+                      ]
+                    }
+                  },
+                  {
+                    loader: 'sass-loader',
+                    options: {
+                      sassOptions: {
+                        includePaths: [path.resolve('src/style')]
+                      }
+                    }
+                  }
+                ],
+              }
             ],
+
           },
           {
             test: /\.css$/,
             include: /node_modules/,
-            use: [
-              {
-                loader: MiniCssExtractPlugin.loader,
-                options: {
-                  // publicPath: '../'
-                }
-              }, 'css-loader'
-            ]
+            use: [{
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                // publicPath: '../'
+              }
+            }, 'css-loader']
           }
         ]
       },
