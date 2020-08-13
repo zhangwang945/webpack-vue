@@ -7,12 +7,14 @@
 </template>
 <script>
 import { test } from "module/test";
+import {x} from 'module/t2'
 export default {
   name: "Hello",
   mounted() {
     console.log(111, this.$route);
     // import('element-ui/lib/dialog')
     console.log(process.env.NODE_ENV);
+    console.log(x);
     test();
   },
 };
